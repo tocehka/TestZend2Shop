@@ -1,0 +1,46 @@
+<div class="bs-docs-section">
+    <div class="well">
+        <?php
+
+        $form->setAttribute('action', $this->url('admin/items',array('action'=>'add')));
+        $form->prepare();
+
+        echo $this->form()->openTag($form);
+        echo "<fieldset><legend>Добавление товара</legend>";
+        foreach($form as $field){
+            echo "<div class=\"form-group\">";
+            $attr = $field->getAttributes();
+            if($field->getLabel()){
+                $field->setLabelAttributes(array('class'=>'col-lg-2 control-label'));
+                if(isset($attr['required'])){
+                    $field->setLabel($field->getLabel().' *');
+                }
+            }
+            if(isset($attr['type'])&&$attr['type']=='text'){
+                echo $this->formLabel($field);
+                echo "<div class=\"col-lg-10\">";
+                echo $this->formInput($field);
+                echo "</div>";
+            }elseif(isset($attr['type'])&&$attr['type']=='textarea'){
+                echo $this->formLabel($field);
+                echo "<div class=\"col-lg-10\">";
+                echo $this->formTextArea($field);
+                echo "</div>";
+            }elseif(isset($attr['type'])&&$attr['type']=='file'){
+                echo $this->formLabel($field);
+                echo "<div class=\"col-lg-10\">";
+                echo $this->formFile($field);
+                echo "</div>";
+            }else{
+                echo "<div class=\"col-lg-10\">";
+                echo $this->formRow($field);
+                echo "</div>";
+            }
+            echo "</div>";
+        }
+        
+        echo "</fieldset>";
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

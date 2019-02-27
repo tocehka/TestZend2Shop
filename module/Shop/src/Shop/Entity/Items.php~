@@ -1,0 +1,81 @@
+<?php
+
+namespace Shop\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Items
+ *
+ * @ORM\Table(name="items", uniqueConstraints={@ORM\UniqueConstraint(name="Articul", columns={"Articul"})})
+ * @ORM\Entity
+ */
+class Items
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="ID", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Articul", type="string", length=6, nullable=true)
+     */
+    private $articul;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Item", type="string", length=255, nullable=true)
+     */
+    private $item;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Prod", type="string", length=255, nullable=true)
+     */
+    private $prod;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Type", type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Color", type="string", length=50, nullable=true)
+     */
+    private $color;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Price", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $price;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Sale", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $sale;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="Date", type="date", nullable=true)
+     */
+    private $date;
+
+
+}

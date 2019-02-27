@@ -1,0 +1,126 @@
+<div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <p class="h4">Параметры поиска</p>
+                </li>
+                <?php $form_search->prepare(); ?>
+                <?php echo $this->form()->openTag($form_search); ?>
+                <?php
+                foreach($form_search as $field){
+                    echo "<li class=\"nav-item\">";
+                    $attr = $field->getAttributes();
+                    if($field->getLabel()){
+                        $field->setLabelAttributes(array('class'=>'control-label'));
+                    }
+                    if(isset($attr['type'])&&$attr['type']=='text'){
+                        echo "<ul class=\"list-group\"><li class=\"list-group-item\">";
+                        echo $this->formLabel($field);
+                        //echo "<div class=\"col-sm-10\">";
+                        echo $this->formElement($field);
+                        echo "</li></ul><br>";
+                    }elseif(isset($attr['type'])&&$attr['type']=='multi_checkbox'){
+                        echo "<ul class=\"list-group\"><div class=\"btn-group-toggle\" data-toggle=\"buttons\">";
+                        $field->setLabelAttributes(array('class'=>'list-group-item btn btn-light'));
+                        echo $this->formLabel($field);
+                        //echo "<div class=\"col-sm-10\">";
+                        echo $this->formElement($field);
+                        echo "</div></ul><br>";
+                    }elseif(isset($attr['type'])&&$attr['type']=='date'){
+                        echo "<ul class=\"list-group\"><li class=\"list-group-item\">";
+                            echo $this->formLabel($field);
+                            echo"<br>";
+                            echo $this->formDate($field);
+                        echo "</li></ul>";
+                    }else{
+                        echo "<br><ul class=\"list-group\">";
+                        echo $this->formRow($field);
+                        echo "</ul>";
+                    }
+                    echo "</li>";
+                }
+                echo "<br><ul class=\"list-group\">";
+                echo "<input type=\"submit\" class=\"btn btn-primary\">";
+                echo "</ul>";
+            ?>
+                <?php echo $this->form()->closeTag(); ?>
+            </ul>
+        </div>
+    </nav>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+<p class="h3">Администрирование товаров</p>
+
+<ul class="list-inline">
+    <li class="list-inline-item">
+        <a class="btn btn-primary" href="<?= $this->url('admin/items',array('action'=>'add'))?>">Добавить один товар</a>
+    </li>
+</ul>
+
+<?php $form->prepare(); ?>
+<?php echo $this->form()->openTag($form); ?>
+
+    <div class="form-element">
+        <?php $fileElement = $form->get('excel-file'); ?>
+        <?php echo $this->formLabel($fileElement); ?>
+        <?php echo $this->formFile($fileElement); ?>
+        <?php echo $this->formElementErrors($fileElement); ?>
+    </div>
+
+    <input type="submit" value="Добавить товары из Excel таблицы"></button>
+
+<?php echo $this->form()->closeTag(); ?>
+<?php
+    $flash =$this->flashMessenger();
+    $flash->setMessageOpenFormat('<div%s><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><ul class=""><li style="list-style-type: none;">');
+    $flash->setMessageSeparatorString('</li><li style="list-style-type: none;">');
+    $flash->setMessageCloseString('</li></ul></div>');
+    echo $flash->render('success', array('alert','alert-success','alert-dismissible'));
+    echo $flash->render('error', array('alert','alert-danger','alert-dismissible'));
+?>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <td><a href="items?orderby=articul&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Артикул</a></td>
+            <td><a href="items?orderby=item&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Наименование</a></td>
+            <td><a href="items?orderby=prod&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Производитель</a></td>
+            <td><a href="items?orderby=type&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Тип</a></td>
+            <td><a href="items?orderby=color&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Цвет</a></td>
+            <td><a href="items?orderby=price&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Цена</a></td>
+            <td><a href="items?orderby=sale&type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Скидка</a></td>
+            <td><a href="items?type=<?= $sorttype?>&<?=$get_params?>&<?=$page?>" class="badge badge-light">Дата поставки</a></td>
+            <td>Действия</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            
+            foreach($items as $item){
+                foreach($item->getDate() as $date){
+                    $date = substr($date,0,10)."<br>";
+                    break;
+                }
+                echo "<tr>
+                    <td>{$item->getArticul()}</td>
+                    <td>{$item->getItem()}</td>
+                    <td>{$item->getProd()}</td>
+                    <td>{$item->getType()}</td>
+                    <td>{$item->getColor()}</td>
+                    <td>{$item->getPrice()}</td>
+                    <td>{$item->getSale()} %</td>
+                    <td>{$date}</td>
+                    <td><a href=\"".$this->url('admin/items',array('action'=>'edit', 'id'=>$item->getId()))."\">Редактировать</a>
+                    <a href=\"".$this->url('admin/items',array('action'=>'delete', 'id'=>$item->getId()))."\">Удалить</a></td>
+                </tr>";
+            }        
+        ?>
+    </tbody>
+</table>
+<?php
+    echo $this->paginationControl($items,'Sliding','pagination_control',array('route'=>'admin/items','get_params'=>$get_params.'&'.$get_sort_params));
+?>
+<p class="lead"><a href="<?= $this->url('admin')?>">На панель администратора</a></p>
+</main>
+</div>
