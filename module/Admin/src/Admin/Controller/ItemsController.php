@@ -97,7 +97,7 @@ class ItemsController extends BaseAdmin
                                 foreach($value as $param){
                                     $searchQuery .= $param.',';
                                 }
-                                $searchQuery = trim($searchQuery,',');
+                                $searchQuery = trim($searchQuery,',').'&';
                             }else{
                                 $searchQuery .= $field.'='.$value.'&';
                             }

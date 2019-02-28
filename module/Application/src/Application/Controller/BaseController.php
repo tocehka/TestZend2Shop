@@ -97,7 +97,7 @@ class BaseController extends AbstractActionController
             $query .= ' AND ';
         }
         $query = substr($query,0,strlen($query)-5);
-        print_r($query);
+        //print_r($query);
         //print_r($this->getEntityManager()->createQuery("SELECT t FROM Shop\Entity\Items t WHERE $query")->getResult());
         return $this->query=$query;
     }

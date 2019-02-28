@@ -40,8 +40,8 @@
                     }
                     echo "</li>";
                 }
-                echo "<br><ul class=\"list-group\">";
-                echo "<input type=\"submit\" class=\"btn btn-primary\">";
+                echo "<ul class=\"list-group\">";
+                echo "<input type=\"submit\" class=\"btn btn-outline-primary\" role=\"button\" value=\"Искать товар\">";
                 echo "</ul>";
             ?>
                 <?php echo $this->form()->closeTag(); ?>
@@ -54,7 +54,7 @@
 
 <ul class="list-inline">
     <li class="list-inline-item">
-        <a class="btn btn-primary" href="<?= $this->url('admin/items',array('action'=>'add'))?>">Добавить один товар</a>
+        <a class="btn btn-outline-primary" role="button" href="<?= $this->url('admin/items',array('action'=>'add'))?>">Добавить один товар</a>
     </li>
 </ul>
 
@@ -73,11 +73,11 @@
 <?php echo $this->form()->closeTag(); ?>
 <?php
     $flash =$this->flashMessenger();
-    $flash->setMessageOpenFormat('<div%s><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><ul class=""><li style="list-style-type: none;">');
+    $flash->setMessageOpenFormat('<div%s role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><ul class=""><li style="list-style-type: none;">');
     $flash->setMessageSeparatorString('</li><li style="list-style-type: none;">');
     $flash->setMessageCloseString('</li></ul></div>');
-    echo $flash->render('success', array('alert','alert-success','alert-dismissible'));
-    echo $flash->render('error', array('alert','alert-danger','alert-dismissible'));
+    echo $flash->render('success', array('alert','alert-success'));
+    echo $flash->render('error', array('alert','alert-danger'));
 ?>
 
 <table class="table table-striped table-hover">
